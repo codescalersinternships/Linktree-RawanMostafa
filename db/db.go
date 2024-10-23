@@ -12,7 +12,7 @@ import (
 )
 
 func ConnectToMongo() *mongo.Client {
-	err := godotenv.Load(".env")
+	err := godotenv.Load("/home/rawan/Codescalers/Linktree-RawanMostafa/.env")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}

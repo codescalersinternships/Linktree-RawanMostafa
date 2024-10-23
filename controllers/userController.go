@@ -43,7 +43,7 @@ func Signup(c *gin.Context) {
 
 	userNameCount, err := userCollection.CountDocuments(ctx, bson.M{"username": user.Username})
 	if err != nil || userNameCount > 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username already used"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Username already exists"})
 		return
 	}
 
@@ -53,7 +53,6 @@ func Signup(c *gin.Context) {
 
 	_, insertErr := userCollection.InsertOne(ctx, user)
 	if insertErr != nil {
-		log.Printf("Error inserting user: %v\n", insertErr) 
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error while creating user"})
 		return
 	}
@@ -93,4 +92,6 @@ func Login(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"token": token})
 
+
+	
 }

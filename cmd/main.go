@@ -1,15 +1,12 @@
 package main
 
 import (
-	// "os"
-
 	"github.com/codescalersinternships/Linktree-RawanMostafa/controllers"
 	"github.com/codescalersinternships/Linktree-RawanMostafa/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// port := os.Getenv("PORT")
 
 	r := gin.Default()
 
@@ -24,7 +21,6 @@ func main() {
 	{
 		// Protected routes
 	}
-
 
 	r.Run(":8080")
 }
