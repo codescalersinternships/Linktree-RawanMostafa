@@ -19,17 +19,22 @@ func ConnectToMongo() *mongo.Client {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	url := os.Getenv("MONGO_DB_URL")
+	// url := os.Getenv("MONGO_DB_URL")
 	username := os.Getenv("MONGO_DB_USERNAME")
 	password := os.Getenv("MONGO_DB_PASSWORD")
 
-	clientOptions := options.Client().ApplyURI(url)
+	// clientOptions := options.Client().ApplyURI(url)
 
-	// clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
-
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017").
+	SetAuth(options.Credential{
+		Username: username,
+		Password: password,
+		AuthSource: "admin", 
+	})
 	clientOptions.SetAuth(options.Credential{
 		Username: username,
 		Password: password,
+		AuthMechanism: "SCRAM-SHA-256",
 	})
 
 	client, err := mongo.Connect(context.Background(), clientOptions)
