@@ -15,6 +15,7 @@ type Visit struct {
 }
 
 type Link struct {
+	LinkID     string  `json:"link_id"`
 	UserID     string  `json:"user_id"`
 	Platform   string  `json:"platform"`
 	Url        string  `json:"url"`

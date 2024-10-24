@@ -19,7 +19,8 @@ func main() {
 	protectedRoutes := r.Group("/protected")
 	protectedRoutes.Use(middleware.AuthenticationMiddleware())
 	{
-		protectedRoutes.POST("/addlink",controllers.AddLink)
+		protectedRoutes.POST("/addlink", controllers.AddLink)
+		protectedRoutes.PUT("/editlink/:link_id", controllers.EditLink)
 	}
 
 	r.Run(":8080")
