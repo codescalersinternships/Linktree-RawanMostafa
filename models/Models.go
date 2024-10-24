@@ -9,10 +9,15 @@ type User struct {
 	SecondName string `json:"second_name"`
 }
 
+type Visit struct {
+	VisitorID string `json:"visitor_id"`
+	VisitTime string `json:"visit_time"`
+}
+
 type Link struct {
-	UserID     string `json:"user_id"`
-	Platform   string `json:"platform"`
-	Url        string `json:"url"`
-	ClickCount int    `json:"click_count"`
-	VisitorID  string `json:"visitor_id"`
+	UserID     string  `json:"user_id"`
+	Platform   string  `json:"platform"`
+	Url        string  `json:"url"`
+	ClickCount int     `json:"click_count"`
+	Visits     []Visit `json:"visits"`
 }
