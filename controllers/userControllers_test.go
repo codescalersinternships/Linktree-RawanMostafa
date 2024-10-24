@@ -17,8 +17,11 @@ import (
 )
 
 type creds struct {
-	Username string
-	Password string
+	Username   string
+	Password   string
+	Bio        string
+	FirstName  string
+	SecondName string
 }
 
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -47,8 +50,11 @@ func TestSignup(t *testing.T) {
 		{
 			testcaseName: "test correct signup",
 			body: creds{
-				Username: "test_user" + fmt.Sprint(random),
-				Password: "test_password",
+				Username:   "test_user" + fmt.Sprint(random),
+				Password:   "test_password",
+				Bio:        "test bio",
+				FirstName:  "test",
+				SecondName: "user",
 			},
 			expectedStatusCode: http.StatusCreated,
 			expectedBody:       `{"message":"User registered successfully"}`,
@@ -58,6 +64,9 @@ func TestSignup(t *testing.T) {
 			body: creds{
 				Username: "test_user" + fmt.Sprint(random),
 				Password: "test_password",
+				Bio:        "test bio",
+				FirstName:  "test",
+				SecondName: "user",
 			},
 			expectedStatusCode: http.StatusBadRequest,
 			expectedBody:       `{"error":"Username already exists"}`,
