@@ -62,8 +62,8 @@ func TestSignup(t *testing.T) {
 		{
 			testcaseName: "test incorrect signup : username already exists",
 			body: creds{
-				Username: "test_user" + fmt.Sprint(random),
-				Password: "test_password",
+				Username:   "test_user" + fmt.Sprint(random),
+				Password:   "test_password",
 				Bio:        "test bio",
 				FirstName:  "test",
 				SecondName: "user",
@@ -100,6 +100,7 @@ func TestSignup(t *testing.T) {
 		})
 	}
 }
+
 
 func TestLogin(t *testing.T) {
 	testcases := []struct {
