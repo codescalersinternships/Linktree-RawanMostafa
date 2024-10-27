@@ -14,6 +14,7 @@ func main() {
 	{
 		publicRoutes.POST("/login", controllers.Login)
 		publicRoutes.POST("/register", controllers.Signup)
+		publicRoutes.GET("/links/:user_id",controllers.GetUserLinks)
 	}
 
 	protectedRoutes := r.Group("/links")
@@ -22,7 +23,6 @@ func main() {
 		protectedRoutes.POST("/add", controllers.AddLink)
 		protectedRoutes.PUT("/edit/:link_id", controllers.EditLink)
 		protectedRoutes.DELETE("/delete/:link_id", controllers.DeleteLink)
-
 	}
 
 	r.Run(":8080")

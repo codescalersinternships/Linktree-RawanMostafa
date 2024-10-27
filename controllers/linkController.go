@@ -118,3 +118,34 @@ func DeleteLink(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Link deleted successfully"})
 }
 
+func GetUserLinks(c *gin.Context) {
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
+
+	userID := c.Param("user_id")
+
+	cursor, err := linkCollection.Find(ctx, bson.M{"userid": userID})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error finding user links"})
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var links []models.Link
+
+	for cursor.Next(ctx) {
+		var link models.Link
+		if err := cursor.Decode(&link); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error decoding link"})
+			return
+		}
+		links = append(links, link)
+	}
+
+	if len(links) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"message": "No links found for this user"})
+		return
+	}
+
+	c.JSON(http.StatusOK, links)
+}
