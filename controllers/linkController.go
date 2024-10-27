@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -73,7 +72,6 @@ func EditLink(c *gin.Context) {
 	defer cancel()
 
 	linkID := c.Param("link_id")
-	log.Println(linkID)
 
 	var input struct {
 		Url string `json:"url"`
@@ -83,7 +81,6 @@ func EditLink(c *gin.Context) {
 		return
 	}
 
-	log.Println("New URL:", input.Url)
 
 	update := bson.M{"$set": bson.M{"url": input.Url}}
 	result, updateErr := linkCollection.UpdateOne(ctx, bson.M{"linkid": linkID}, update)
@@ -99,3 +96,25 @@ func EditLink(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Link updated successfully"})
 }
+
+func DeleteLink(c *gin.Context) {
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
+
+	linkID := c.Param("link_id")
+
+
+	result, deleteErr := linkCollection.DeleteOne(ctx, bson.M{"linkid": linkID})
+	if deleteErr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error deleting link"})
+		return
+	}
+
+	if result.DeletedCount == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Link not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Link deleted successfully"})
+}
+

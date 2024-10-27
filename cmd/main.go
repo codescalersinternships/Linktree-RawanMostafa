@@ -16,11 +16,13 @@ func main() {
 		publicRoutes.POST("/register", controllers.Signup)
 	}
 
-	protectedRoutes := r.Group("/protected")
+	protectedRoutes := r.Group("/links")
 	protectedRoutes.Use(middleware.AuthenticationMiddleware())
 	{
-		protectedRoutes.POST("/addlink", controllers.AddLink)
-		protectedRoutes.PUT("/editlink/:link_id", controllers.EditLink)
+		protectedRoutes.POST("/add", controllers.AddLink)
+		protectedRoutes.PUT("/edit/:link_id", controllers.EditLink)
+		protectedRoutes.DELETE("/delete/:link_id", controllers.DeleteLink)
+
 	}
 
 	r.Run(":8080")
