@@ -79,11 +79,4 @@ func TestAddLink(t *testing.T) {
 	r.ServeHTTP(res, req)
 
 	assert.Equal(t, http.StatusCreated, res.Code)
-
-	// bodyData, err := io.ReadAll(res.Body)
-	// if err != nil {
-	// 	t.Errorf("Error reading response body %v", err)
-	// }
-
-	// assert.Equal(t, testcase.expectedBody, string(bodyData))
 }

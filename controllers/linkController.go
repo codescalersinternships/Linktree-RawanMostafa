@@ -81,7 +81,6 @@ func EditLink(c *gin.Context) {
 		return
 	}
 
-
 	update := bson.M{"$set": bson.M{"url": input.Url}}
 	result, updateErr := linkCollection.UpdateOne(ctx, bson.M{"linkid": linkID}, update)
 	if updateErr != nil {
@@ -103,7 +102,6 @@ func DeleteLink(c *gin.Context) {
 
 	linkID := c.Param("link_id")
 
-
 	result, deleteErr := linkCollection.DeleteOne(ctx, bson.M{"linkid": linkID})
 	if deleteErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error deleting link"})
@@ -122,9 +120,15 @@ func GetUserLinks(c *gin.Context) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
 
-	userID := c.Param("user_id")
+	username := c.Param("username")
+	var user models.User
+	err := userCollection.FindOne(ctx, bson.M{"username": username}).Decode(&user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Not user found with this username"})
+		return
+	}
 
-	cursor, err := linkCollection.Find(ctx, bson.M{"userid": userID})
+	cursor, err := linkCollection.Find(ctx, bson.M{"userid": user.ID})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error finding user links"})
 		return
