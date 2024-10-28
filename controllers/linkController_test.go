@@ -114,3 +114,17 @@ func TestEditLink(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, res.Code)
 }
+
+func TestDeleteLink(t *testing.T) {
+	token := signupAndLogin(t)
+	r := gin.Default()
+	r.DELETE("/links/delete/:link_id", DeleteLink)
+	req, _ := http.NewRequest("DELETE", "/links/delete/"+addLinkResBody.LinkID, nil)
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+token)
+
+	res := httptest.NewRecorder()
+	r.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusOK, res.Code)
+}
