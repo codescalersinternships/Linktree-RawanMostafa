@@ -1,0 +1,237 @@
+definitions:
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.LinkRequest:
+    properties:
+      platform:
+        type: string
+      url:
+        type: string
+    type: object
+  models.LinkResponse:
+    properties:
+      linkid:
+        type: string
+      message:
+        type: string
+    type: object
+  models.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  models.MsgResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.User:
+    properties:
+      bio:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+      second_name:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a the server of the linktree application
+  title: Linktree Service API
+  version: "1.0"
+paths:
+  /api/v1/link:
+    post:
+      consumes:
+      - application/json
+      description: Add a new link for the authenticated user
+      parameters:
+      - description: Link Details
+        in: body
+        name: linkRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.LinkRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.LinkResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Add new link
+      tags:
+      - Link
+  /api/v1/link/:link_id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing link that's created by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MsgResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Delete a link
+      tags:
+      - Link
+    put:
+      consumes:
+      - application/json
+      description: Edit an existing link that's created by the authenticated user
+      parameters:
+      - description: Link Details
+        in: body
+        name: linkRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.LinkRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MsgResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Edit a link
+      tags:
+      - Link
+  /api/v1/link/:username:
+    get:
+      consumes:
+      - application/json
+      description: Get links of a specific username
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MsgResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get links
+      tags:
+      - Link
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Logs a user is if credentials are valid and returns a JWT token
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: User login
+      tags:
+      - User
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Register the user if its username doesn't exist and save it in
+        the db
+      parameters:
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.MsgResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: User signup
+      tags:
+      - User
+swagger: "2.0"

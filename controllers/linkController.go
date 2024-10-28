@@ -45,6 +45,17 @@ func getUserIDFromToken(c *gin.Context) (userID string) {
 
 var linkCollection *mongo.Collection = db.OpenCollection(db.Client, "link")
 
+// AddLink		godoc
+// @Summary		Add new link
+// @Description Add a new link for the authenticated user
+// @Tags		Link
+// @Accept		json
+// @Produce		json
+// @Param		linkRequest 	body		models.LinkRequest	true	"Link Details"
+// @Success		201				{object}	models.LinkResponse
+// @Failure		400				{object}	models.ErrorResponse
+// @Failure		500				{object}	models.ErrorResponse
+// @Router		/api/v1/link [post]
 func AddLink(c *gin.Context) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
@@ -70,21 +81,34 @@ func AddLink(c *gin.Context) {
 	})
 }
 
+// EditLink		godoc
+// @Summary		Edit a link
+// @Description Edit an existing link that's created by the authenticated user
+// @Tags		Link
+// @Accept		json
+// @Produce		json
+// @Param		linkRequest 	body		models.LinkRequest	true	"Link Details"
+// @Success		200				{object}	models.MsgResponse
+// @Failure		400				{object}	models.ErrorResponse
+// @Failure		404				{object}	models.ErrorResponse
+// @Failure		500				{object}	models.ErrorResponse
+// @Router		/api/v1/link/:link_id [put]
 func EditLink(c *gin.Context) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
 
 	linkID := c.Param("link_id")
 
-	var input struct {
-		Url string `json:"url"`
-	}
+	var input models.LinkRequest
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
 
-	update := bson.M{"$set": bson.M{"url": input.Url}}
+	update := bson.M{"$set": bson.M{
+		"url":      input.Url,
+		"platform": input.Platform,
+	}}
 	result, updateErr := linkCollection.UpdateOne(ctx, bson.M{"linkid": linkID}, update)
 	if updateErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating link"})
@@ -99,6 +123,16 @@ func EditLink(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Link updated successfully"})
 }
 
+// DeleteLink	godoc
+// @Summary		Delete a link
+// @Description Delete an existing link that's created by the authenticated user
+// @Tags		Link
+// @Accept		json
+// @Produce		json
+// @Success		200				{object}	models.MsgResponse
+// @Failure		404				{object}	models.ErrorResponse
+// @Failure		500				{object}	models.ErrorResponse
+// @Router		/api/v1/link/:link_id [delete]
 func DeleteLink(c *gin.Context) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
@@ -119,6 +153,16 @@ func DeleteLink(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Link deleted successfully"})
 }
 
+// GetUserLinks	godoc
+// @Summary		Get links
+// @Description Get links of a specific username
+// @Tags		Link
+// @Accept		json
+// @Produce		json
+// @Success		200				{object}	models.MsgResponse
+// @Failure		404				{object}	models.ErrorResponse
+// @Failure		500				{object}	models.ErrorResponse
+// @Router		/api/v1/link/:username [get]
 func GetUserLinks(c *gin.Context) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()

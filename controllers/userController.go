@@ -31,6 +31,17 @@ func VerifyPassword(userPassword string, providedPassword string) bool {
 	return err == nil
 }
 
+// Signup		godoc
+// @Summary		User signup
+// @Description Register the user if its username doesn't exist and save it in the db
+// @Tags		User
+// @Accept		json
+// @Produce		json
+// @Param		user	body		models.User	true	"User Data"
+// @Success		201		{object}	models.MsgResponse
+// @Failure		400		{object}	models.ErrorResponse
+// @Failure		500		{object}	models.ErrorResponse
+// @Router		/user/register [post]
 func Signup(c *gin.Context) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
@@ -60,11 +71,23 @@ func Signup(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
 }
 
+// Login		godoc
+// @Summary		User login
+// @Description Logs a user is if credentials are valid and returns a JWT token
+// @Tags		User
+// @Accept		json
+// @Produce		json
+// @Param		loginRequest	body		models.LoginRequest	true	"Login Credentials"
+// @Success		200				{object}	models.LoginResponse
+// @Failure		400				{object}	models.ErrorResponse
+// @Failure		401				{object}	models.ErrorResponse
+// @Failure		500				{object}	models.ErrorResponse
+// @Router		/user/login [post]
 func Login(c *gin.Context) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
 
-	var user models.User
+	var user models.LoginRequest
 
 	var foundUser models.User
 
@@ -92,6 +115,4 @@ func Login(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"token": token})
 
-
-	
 }

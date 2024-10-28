@@ -23,7 +23,7 @@ func init() {
 func signupAndLogin(t *testing.T) (token string, username string) {
 	t.Helper()
 	r := gin.Default()
-	r.POST("/public/register", Signup)
+	r.POST("/user/register", Signup)
 	randomStr := GenerateRandomString()
 	body := creds{
 		Username:   "test_user" + randomStr,
@@ -33,7 +33,7 @@ func signupAndLogin(t *testing.T) (token string, username string) {
 		SecondName: "user",
 	}
 	marshalled, _ := json.Marshal(body)
-	req, _ := http.NewRequest("POST", "/public/register", bytes.NewReader(marshalled))
+	req, _ := http.NewRequest("POST", "/user/register", bytes.NewReader(marshalled))
 	req.Header.Add("content-type", "application/json")
 
 	res := httptest.NewRecorder()
@@ -44,9 +44,9 @@ func signupAndLogin(t *testing.T) (token string, username string) {
 		Password: "test_password",
 	}
 
-	r.POST("/public/login", Login)
+	r.POST("/user/login", Login)
 	marshalled, _ = json.Marshal(body)
-	req, _ = http.NewRequest("POST", "/public/login", bytes.NewReader(marshalled))
+	req, _ = http.NewRequest("POST", "/user/login", bytes.NewReader(marshalled))
 	req.Header.Add("content-type", "application/json")
 
 	res = httptest.NewRecorder()
@@ -71,7 +71,7 @@ var addLinkResBody AddLinkRes
 func TestAddLink(t *testing.T) {
 	token, _ := signupAndLogin(t)
 	r := gin.Default()
-	r.POST("/links/add", AddLink)
+	r.POST("/api/v1/link/", AddLink)
 	body := struct {
 		Url      string `json:"url"`
 		Platform string `json:"platform"`
@@ -80,7 +80,7 @@ func TestAddLink(t *testing.T) {
 		Platform: "test_platform",
 	}
 	marshalled, _ := json.Marshal(body)
-	req, _ := http.NewRequest("POST", "/links/add", bytes.NewReader(marshalled))
+	req, _ := http.NewRequest("POST", "/api/v1/link/", bytes.NewReader(marshalled))
 	req.Header.Add("content-type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
 	res := httptest.NewRecorder()
@@ -99,14 +99,13 @@ func TestAddLink(t *testing.T) {
 func TestEditLink(t *testing.T) {
 	token, _ := signupAndLogin(t)
 	r := gin.Default()
-	r.PUT("/links/edit/:link_id", EditLink)
-	body := struct {
-		Url string `json:"url"`
-	}{
+	r.PUT("/api/v1/link/:link_id", EditLink)
+	body := models.LinkRequest {
 		Url: "test_url_new" + GenerateRandomString(),
+		Platform: "test_new_platform",
 	}
 	marshalled, _ := json.Marshal(body)
-	req, _ := http.NewRequest("PUT", "/links/edit/"+addLinkResBody.LinkID, bytes.NewReader(marshalled))
+	req, _ := http.NewRequest("PUT", "/api/v1/link/"+addLinkResBody.LinkID, bytes.NewReader(marshalled))
 	req.Header.Add("content-type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
 
@@ -120,8 +119,8 @@ func TestDeleteLink(t *testing.T) {
 	token, _ := signupAndLogin(t)
 	r := gin.Default()
 
-	r.DELETE("/links/delete/:link_id", DeleteLink)
-	req, _ := http.NewRequest("DELETE", "/links/delete/"+addLinkResBody.LinkID, nil)
+	r.DELETE("/api/v1/link/:link_id", DeleteLink)
+	req, _ := http.NewRequest("DELETE", "/api/v1/link/"+addLinkResBody.LinkID, nil)
 	req.Header.Add("content-type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
 
@@ -135,7 +134,7 @@ func TestGetUserLinks(t *testing.T) {
 	token, username := signupAndLogin(t)
 	r := gin.Default()
 
-	r.POST("/links/add", AddLink)
+	r.POST("/api/v1/link/", AddLink)
 	body := struct {
 		Url      string `json:"url"`
 		Platform string `json:"platform"`
@@ -144,7 +143,7 @@ func TestGetUserLinks(t *testing.T) {
 		Platform: "test_platform",
 	}
 	marshalled, _ := json.Marshal(body)
-	req, _ := http.NewRequest("POST", "/links/add", bytes.NewReader(marshalled))
+	req, _ := http.NewRequest("POST", "/api/v1/link/", bytes.NewReader(marshalled))
 	req.Header.Add("content-type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
 	res := httptest.NewRecorder()
@@ -158,8 +157,8 @@ func TestGetUserLinks(t *testing.T) {
 		t.Error("unmarshal error")
 	}
 
-	r.GET("/links/:username", GetUserLinks)
-	req, _ = http.NewRequest("GET", "/links/"+username, nil)
+	r.GET("/api/v1/link/:username", GetUserLinks)
+	req, _ = http.NewRequest("GET", "/api/v1/link/"+username, nil)
 	req.Header.Add("content-type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
 

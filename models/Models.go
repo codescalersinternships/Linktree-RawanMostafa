@@ -22,3 +22,30 @@ type Link struct {
 	ClickCount int     `json:"click_count"`
 	Visits     []Visit `json:"visits"`
 }
+
+type MsgResponse struct {
+	Message string `json:"message"`
+}
+
+type LoginResponse struct {
+	Token string `json:"token"`
+}
+
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
+
+type LoginRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+type LinkRequest struct {
+	Platform string `json:"platform"`
+	Url      string `json:"url"`
+}
+
+type LinkResponse struct {
+	Message string `json:"message"`
+	LinkID  string `json:"linkid"`
+}

@@ -75,12 +75,12 @@ func TestSignup(t *testing.T) {
 	for _, testcase := range testcases {
 		t.Run(testcase.testcaseName, func(t *testing.T) {
 			r := gin.Default()
-			r.POST("/public/register", Signup)
+			r.POST("/user/register", Signup)
 			marshalled, err := json.Marshal(testcase.body)
 			if err != nil {
 				log.Fatalf("failed to marshall credentials: %s", err)
 			}
-			req, err := http.NewRequest("POST", "/public/register", bytes.NewReader(marshalled))
+			req, err := http.NewRequest("POST", "/user/register", bytes.NewReader(marshalled))
 			if err != nil {
 				log.Fatalf("impossible to build request: %s", err)
 			}
@@ -100,7 +100,6 @@ func TestSignup(t *testing.T) {
 		})
 	}
 }
-
 
 func TestLogin(t *testing.T) {
 	testcases := []struct {
@@ -140,12 +139,12 @@ func TestLogin(t *testing.T) {
 	for _, testcase := range testcases {
 		t.Run(testcase.testcaseName, func(t *testing.T) {
 			r := gin.Default()
-			r.POST("/public/login", Login)
+			r.POST("/user/login", Login)
 			marshalled, err := json.Marshal(testcase.body)
 			if err != nil {
 				log.Fatalf("failed to marshall credentials: %s", err)
 			}
-			req, err := http.NewRequest("POST", "/public/login", bytes.NewReader(marshalled))
+			req, err := http.NewRequest("POST", "/user/login", bytes.NewReader(marshalled))
 			if err != nil {
 				log.Fatalf("impossible to build request: %s", err)
 			}
