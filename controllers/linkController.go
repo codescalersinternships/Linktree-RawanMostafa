@@ -64,7 +64,10 @@ func AddLink(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "link added successfully"})
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "link added successfully",
+		"linkid":  link.LinkID,
+	})
 }
 
 func EditLink(c *gin.Context) {

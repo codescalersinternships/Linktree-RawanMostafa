@@ -59,6 +59,14 @@ func signupAndLogin(t *testing.T) (token string) {
 	}
 	return
 }
+
+type AddLinkRes struct {
+	Message string `json:"message"`
+	LinkID  string `json:"linkid"`
+}
+
+var addLinkResBody AddLinkRes
+
 func TestAddLink(t *testing.T) {
 	token := signupAndLogin(t)
 	r := gin.Default()
@@ -74,9 +82,35 @@ func TestAddLink(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/links/add", bytes.NewReader(marshalled))
 	req.Header.Add("content-type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+token)
-
 	res := httptest.NewRecorder()
 	r.ServeHTTP(res, req)
 
 	assert.Equal(t, http.StatusCreated, res.Code)
+	bodyData, _ := io.ReadAll(res.Body)
+
+	err := json.Unmarshal(bodyData, &addLinkResBody)
+	if err != nil {
+		t.Error("unmarshal error")
+	}
+
+}
+
+func TestEditLink(t *testing.T) {
+	token := signupAndLogin(t)
+	r := gin.Default()
+	r.PUT("/links/edit/:link_id", EditLink)
+	body := struct {
+		Url string `json:"url"`
+	}{
+		Url: "test_url_new" + GenerateRandomString(),
+	}
+	marshalled, _ := json.Marshal(body)
+	req, _ := http.NewRequest("PUT", "/links/edit/"+addLinkResBody.LinkID, bytes.NewReader(marshalled))
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+token)
+
+	res := httptest.NewRecorder()
+	r.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusOK, res.Code)
 }
