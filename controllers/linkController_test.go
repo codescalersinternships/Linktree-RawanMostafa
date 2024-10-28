@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/codescalersinternships/Linktree-RawanMostafa/models"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
@@ -19,7 +20,7 @@ func init() {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 }
 
-func signupAndLogin(t *testing.T) (token string) {
+func signupAndLogin(t *testing.T) (token string, username string) {
 	t.Helper()
 	r := gin.Default()
 	r.POST("/public/register", Signup)
@@ -57,7 +58,7 @@ func signupAndLogin(t *testing.T) (token string) {
 		part := strings.Split(string(bodyData), ":")[1]
 		token = strings.Trim(part, `"} \n`)
 	}
-	return
+	return token, body.Username
 }
 
 type AddLinkRes struct {
@@ -68,7 +69,7 @@ type AddLinkRes struct {
 var addLinkResBody AddLinkRes
 
 func TestAddLink(t *testing.T) {
-	token := signupAndLogin(t)
+	token, _ := signupAndLogin(t)
 	r := gin.Default()
 	r.POST("/links/add", AddLink)
 	body := struct {
@@ -96,7 +97,7 @@ func TestAddLink(t *testing.T) {
 }
 
 func TestEditLink(t *testing.T) {
-	token := signupAndLogin(t)
+	token, _ := signupAndLogin(t)
 	r := gin.Default()
 	r.PUT("/links/edit/:link_id", EditLink)
 	body := struct {
@@ -116,8 +117,9 @@ func TestEditLink(t *testing.T) {
 }
 
 func TestDeleteLink(t *testing.T) {
-	token := signupAndLogin(t)
+	token, _ := signupAndLogin(t)
 	r := gin.Default()
+
 	r.DELETE("/links/delete/:link_id", DeleteLink)
 	req, _ := http.NewRequest("DELETE", "/links/delete/"+addLinkResBody.LinkID, nil)
 	req.Header.Add("content-type", "application/json")
@@ -127,4 +129,51 @@ func TestDeleteLink(t *testing.T) {
 	r.ServeHTTP(res, req)
 
 	assert.Equal(t, http.StatusOK, res.Code)
+}
+
+func TestGetUserLinks(t *testing.T) {
+	token, username := signupAndLogin(t)
+	r := gin.Default()
+
+	r.POST("/links/add", AddLink)
+	body := struct {
+		Url      string `json:"url"`
+		Platform string `json:"platform"`
+	}{
+		Url:      "test_url_" + GenerateRandomString(),
+		Platform: "test_platform",
+	}
+	marshalled, _ := json.Marshal(body)
+	req, _ := http.NewRequest("POST", "/links/add", bytes.NewReader(marshalled))
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+token)
+	res := httptest.NewRecorder()
+	r.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusCreated, res.Code)
+	bodyData, _ := io.ReadAll(res.Body)
+
+	err := json.Unmarshal(bodyData, &addLinkResBody)
+	if err != nil {
+		t.Error("unmarshal error")
+	}
+
+	r.GET("/links/:username", GetUserLinks)
+	req, _ = http.NewRequest("GET", "/links/"+username, nil)
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+token)
+
+	res = httptest.NewRecorder()
+	r.ServeHTTP(res, req)
+
+	assert.Equal(t, http.StatusOK, res.Code)
+
+	bodyData, _ = io.ReadAll(res.Body)
+	var links []models.Link
+	err = json.Unmarshal(bodyData, &links)
+	if err != nil {
+		t.Error("unmarshal error")
+	}
+
+	assert.Equal(t, len(links), 1)
 }
