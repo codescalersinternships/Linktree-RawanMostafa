@@ -1,4 +1,7 @@
-include .env
+ifneq (,$(wildcard ../.env))
+    include ../.env
+    export $(shell sed 's/=.*//' ../.env)
+endif
 
 up:
 	@echo "Starting container..."
