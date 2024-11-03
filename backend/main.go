@@ -12,7 +12,7 @@ import (
 //	@version		1.0
 //	@description	This is a the server of the linktree application
 
-//	@host		localhost:8080
+//	@host		localhost:8083
 func main() {
 
 	r := gin.Default()
@@ -32,5 +32,5 @@ func main() {
 		protectedRoutes.GET("/:username", controllers.GetUserLinks)
 	}
 
-	r.Run(":8080")
+	r.Run(":8083")
 }
