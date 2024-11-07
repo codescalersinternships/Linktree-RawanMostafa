@@ -1,8 +1,8 @@
 <template>
     <div class="link">
         <div class="hero-link">
-            <img class="platform-logo" src="../assets/instagram.png" alt="instagram logo">
-            <h3 for="first-name">https://instagram.com</h3>
+            <img class="platform-logo" src="../assets/icons/instagram.png" alt="instagram logo">
+            <a href="https://instagram.com" for="first-name">https://instagram.com</a>
             <div class="dropdown">
                 <div class="dropdown-btn">...</div>
                 <div class="dropdown-content">
@@ -57,10 +57,11 @@ body {
     align-items: center;
 }
 
-.link h3 {
+.link a {
     color: rgb(36, 73, 70);
     font-size: 18px;
     margin: 0;
+    text-decoration: none;
 }
 
 .dropdown {
@@ -119,5 +120,9 @@ body {
     color: rgb(36, 73, 70);
     font-size: 17px;
     align-self: flex-start;
+}
+
+.link a:hover{
+    color: rgb(15, 40, 38);
 }
 </style>

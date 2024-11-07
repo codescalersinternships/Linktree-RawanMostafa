@@ -30,6 +30,9 @@
 
         <button class="submit-btn" type="submit">Sign Up</button>
     </form>
+    <h4>Already have an account? 
+        <a href="#" class="login-link">Login</a>
+    </h4>
 </template>
 
 <script>
@@ -101,5 +104,8 @@ body {
 
 .submit-btn:hover {
     background-color: rgb(35, 64, 74);
+}
+a,h4 {
+color: rgb(36, 73, 70);
 }
 </style>

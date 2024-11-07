@@ -1,22 +1,15 @@
-<script >
+<script setup>
 import Register from './components/Register.vue'
 import Login from './components/Login.vue'
 import Link from './components/Link.vue'
 import AddLink from './components/AddLink.vue'
-
-export default {
-  components:{
-    Register,
-    Login,
-    Link,
-    AddLink,
-  },
-}
+import NavBar from './components/NavBar.vue'
 </script>
 
 <template>
-  <Register />
-  <Login/> 
-  <Link />
-   <AddLink />
+  <NavBar/>
+  <!-- <Register /> -->
+  <!-- <Login/>  -->
+  <!-- <Link /> -->
+   <!-- <AddLink />  -->
 </template>

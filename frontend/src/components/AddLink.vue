@@ -82,7 +82,7 @@ h2 {
 }
 
 .platform-icon {
-    height: 50px;
+    height: 40px;
     cursor: pointer;
     border: 4px solid transparent;
     border-radius: 10px;
