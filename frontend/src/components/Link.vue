@@ -36,6 +36,7 @@ body {
 .platform-logo{
     width: 30px;
 }
+
 .link {
     width: 100%;
     max-width: 400px;
