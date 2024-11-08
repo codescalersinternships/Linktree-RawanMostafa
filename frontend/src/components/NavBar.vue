@@ -2,7 +2,7 @@
     <div class="navbar">
         <div class="logo">
             <img src="../assets/logo.png" alt="">
-            <h2>Linktree</h2>
+            <a class="title" href="#">Linktree</a>
         </div>
         <div class="links">
             <a href="#" class="link">Home</a>
@@ -52,20 +52,24 @@ body {
     gap: 30px;
     font-family:'Courier New', Courier, monospace;
 }
-h2{
-    font-family:'Courier New', Courier, monospace;
-}
+
 .link {
     color: rgb(36, 73, 70);
     font-size: 18px;
     text-decoration: none;
     font-weight: 500;
-    padding: 8px 16px;
+    padding: 5px 5px;
     border-radius: 7px;
     transition: background-color 0.3s, color 0.3s;
 }
 .link:hover {
     background-color: rgba(52, 107, 102, 0.5);
     color: rgb(15, 40, 38);
+}
+.title{
+    color: rgb(36, 73, 70);
+    font-family:'Courier New', Courier, monospace;
+    text-decoration: none;
+    font-size: 25px;
 }
 </style>
