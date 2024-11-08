@@ -6,10 +6,16 @@ import AddLink from './components/AddLink.vue'
 import NavBar from './components/NavBar.vue'
 </script>
 
+
+
 <template>
-  <NavBar/>
-  <!-- <Register /> -->
-  <!-- <Login/>  -->
-  <!-- <Link /> -->
-   <!-- <AddLink />  -->
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
+
+<script>
+export default {
+  name: 'App',
+};
+</script>
