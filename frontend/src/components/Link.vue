@@ -1,8 +1,8 @@
 <template>
     <div class="link">
         <div class="hero-link">
-            <img class="platform-logo" src="../assets/icons/instagram.png" alt="instagram logo">
-            <a href="https://instagram.com" for="first-name">https://instagram.com</a>
+            <img class="platform-logo" :src="`@/assets/icons/${platform}.png`" :alt="`${platform} logo`" />         
+            <a :href="url" target="_blank">{{ url }}</a>
             <div class="dropdown">
                 <div class="dropdown-btn">...</div>
                 <div class="dropdown-content">
@@ -12,10 +12,28 @@
             </div>
         </div>
         <div class="click-count">
-            <small>click count : 10</small>
+            <small>Click count: {{ click_count }}</small>
         </div>
     </div>
 </template>
+
+<script setup>
+defineProps({
+  url: {
+    type: String,
+    required: true
+  },
+  platform: {
+    type: String,
+    required: true
+  },
+  click_count: {
+    type: Number,
+    required: true
+  }
+})
+
+</script>
 
 <style>
 html,
@@ -47,6 +65,7 @@ body {
     flex-direction: column; 
     align-items: flex-start;
     background-color: rgba(147, 174, 172, 0.634);
+    margin: 20px;
 }
 
 .hero-link {

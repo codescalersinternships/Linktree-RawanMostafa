@@ -7,7 +7,7 @@ function handleSubmit(data) {
         .then(response => {
             console.log('login successful:', response.data);
             localStorage.setItem('authToken', response.data.token);
-            window.location.href = '/profile';
+            window.location.href = '/'+data.username;
         })
         .catch(err => {
             console.error('login failed:', error);

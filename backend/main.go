@@ -22,7 +22,7 @@ func main() {
 	r.Use(cors.New(cors.Config{
         AllowOrigins:     []string{"http://localhost:5173"},
         AllowMethods:     []string{"POST", "GET", "OPTIONS"},
-        AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
         ExposeHeaders:    []string{"Content-Length"},
         AllowCredentials: true,
     }))
