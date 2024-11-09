@@ -1,24 +1,33 @@
 <template>
-
     <h1 class="title">Login</h1>
-    <form class="login" method="post">
+    <form class="login" method="post" @submit.prevent="submitForm">
 
         <div class="form-field">
             <label for="username">Username</label>
-            <input type="text" id="username" class="username">
+            <input type="text" id="username" class="username" v-model="data.username" required>
         </div>
 
         <div class="form-field">
             <label for="password">Password</label>
-            <input type="password" id="password" class="password">
+            <input type="password" id="password" class="password" v-model="data.password" required>
         </div>
 
         <button class="submit-btn" type="submit">Login</button>
     </form>
 </template>
 
-<script>
+<script setup>
+import { reactive } from 'vue';
 
+const data = reactive({
+    username: '',
+    password: '',
+});
+const emit = defineEmits(['submitForm']);
+
+function submitForm() {
+    emit('submitForm', data);
+}
 </script>
 
 <style>
