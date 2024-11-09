@@ -2,16 +2,16 @@
     
     <div class="navbar">
         <div class="logo">
-            <img src="../assets/logo.png" alt="Logo">
-            <a class="title" href="#">Linktree</a>
+            <a href="/"><img src="../assets/logo.png" alt="Logo"></a>
+            <a class="title" href="/">Linktree</a>
         </div>
         <div class="hamburger" @click="toggleDropdown">
             ☰
         </div>
         <div class="links" :class="{ 'show': dropdownVisible }">
-            <a href="/" class="link">Home</a>
             <a href="#" class="link">Profile</a>
             <a href="/register" class="link">Register</a>
+            <a href="/login" class="link">Login</a>
         </div>
     </div>
 </template>

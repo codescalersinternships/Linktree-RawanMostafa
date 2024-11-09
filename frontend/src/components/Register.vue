@@ -1,33 +1,33 @@
 <template>
     <div class="hero">
     <h1 class="title">Sign Up</h1>
-    <form class="signup" method="post">
+    <form class="signup" method="post" @submit.prevent="submitForm">
+        <div v-if='ChecksError.message' class="error-message">{{ ChecksError.message }}</div>
         <div class="form-field">
             <label for="first-name">First Name</label>
-            <input type="text" id="first-name" class="first-name">
+            <input type="text" id="first-name" class="first-name" v-model="data.first_name" required>
         </div>
 
         <div class="form-field">
             <label for="second-name">Second Name</label>
-            <input type="text" id="second-name" class="second-name">
+            <input type="text" id="second-name" class="second-name" v-model="data.second_name" required>
         </div>
 
         <div class="form-field">
             <label for="username">Username</label>
-            <input type="text" id="username" class="username">
+            <input type="text" id="username" class="username"  v-model="data.username" required>
         </div>
 
         <div class="form-field">
             <label for="password">Password</label>
-            <input type="password" id="password" class="password">
+            <input type="password" id="password" class="password" v-model="data.password" required>
         </div>
 
         <div class="form-field">
             <label for="conform-password">Confirm password</label>
-            <input type="password" id="conform-password" class="conform-password">
+            <input type="password" id="conform-password" class="conform-password"  v-model="data.confirmPassword" required>
 
         </div>
-
         <button class="submit-btn" type="submit">Sign Up</button>
     </form>
     <h4>Already have an account? 
@@ -36,8 +36,27 @@
 </div>
 </template>
 
-<script>
+<script setup>
+import { reactive, defineEmits } from 'vue';
 
+const data = reactive({
+    username: '',
+    password: '',
+    first_name: '',
+    second_name: '',
+    confirmPassword: ''
+});
+const ChecksError = reactive({message:''});
+const emit = defineEmits(['submitForm']);
+
+function submitForm() {
+    if (data.password !== data.confirmPassword) {
+        ChecksError.message = "Passwords do not match";
+    } else {
+        const { confirmPassword, ...formData } = data;
+        emit('submitForm', formData);
+    }
+}
 </script>
 
 <style>
@@ -112,6 +131,10 @@ color: rgb(36, 73, 70);
 }
 .hero {
     padding-top: 100px; 
+}
+.error-message{
+    color: red;
+    margin-top: 20px;
 }
 
 </style>

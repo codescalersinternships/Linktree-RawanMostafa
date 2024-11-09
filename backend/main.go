@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/gin-contrib/cors"
+
 )
 //  @title Linktree Service API
 //	@version		1.0
@@ -16,6 +18,15 @@ import (
 func main() {
 
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"http://localhost:5173"},
+        AllowMethods:     []string{"POST", "GET", "OPTIONS"},
+        AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+        ExposeHeaders:    []string{"Content-Length"},
+        AllowCredentials: true,
+    }))
+
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	publicRoutes := r.Group("/user")
 	{
