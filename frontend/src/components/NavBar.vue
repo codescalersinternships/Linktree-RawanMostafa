@@ -9,9 +9,9 @@
             ☰
         </div>
         <div class="links" :class="{ 'show': dropdownVisible }">
-            <a href="#" class="link">Home</a>
+            <a href="/" class="link">Home</a>
             <a href="#" class="link">Profile</a>
-            <a href="#" class="link">Register</a>
+            <a href="/register" class="link">Register</a>
         </div>
     </div>
 </template>

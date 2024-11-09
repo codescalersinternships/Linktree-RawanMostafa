@@ -1,5 +1,5 @@
 <template>
-
+    <div class="hero">
     <h1 class="title">Sign Up</h1>
     <form class="signup" method="post">
         <div class="form-field">
@@ -31,8 +31,9 @@
         <button class="submit-btn" type="submit">Sign Up</button>
     </form>
     <h4>Already have an account? 
-        <a href="#" class="login-link">Login</a>
+        <a href="/login" class="login-link">Login</a>
     </h4>
+</div>
 </template>
 
 <script>
@@ -43,7 +44,6 @@
 html,
 body {
     height: 100%;
-    margin: 0;
 }
 
 body {
@@ -68,6 +68,7 @@ body {
 .title {
     color: rgb(36, 73, 70);
     text-align: center;
+    
 }
 
 .form-field {
@@ -89,6 +90,7 @@ body {
 .form-field label {
     margin: 20px;
     width: 150px;
+    color: rgb(36, 73, 70)
 }
 
 .submit-btn {
@@ -108,4 +110,8 @@ body {
 a,h4 {
 color: rgb(36, 73, 70);
 }
+.hero {
+    padding-top: 100px; 
+}
+
 </style>

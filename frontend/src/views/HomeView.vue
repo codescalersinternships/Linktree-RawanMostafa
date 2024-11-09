@@ -49,7 +49,7 @@ body, html {
   margin: 0;
   color: #fff;
   opacity: 0;
-  animation: fade 3s ease-in-out forwards, changeColor 6s infinite alternate;
+  animation: fade 1.5s ease-in-out forwards, changeColor 6s infinite alternate;
 }
 
 .sub-phrase {
@@ -57,13 +57,13 @@ body, html {
   margin-top: 20px;
   color: #e0f7fa;
   opacity: 0;
-  animation: fade 3s ease-in-out 1.5s forwards;
+  animation: fade 1.5s ease-in-out 1.5s forwards;
 }
 
 .main img{
   height: 100px;
   margin-bottom: 50px;
-  animation: fade 3s ease-in-out forwards;
+  animation: fade 1.5s ease-in-out forwards;
 }
 
 @keyframes fade {
