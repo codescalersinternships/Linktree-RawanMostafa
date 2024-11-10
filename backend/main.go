@@ -32,7 +32,11 @@ func main() {
 	{
 		publicRoutes.POST("/login", controllers.Login)
 		publicRoutes.POST("/register", controllers.Signup)
+		
 	}
+	r.Use(middleware.AuthenticationMiddleware()).PUT("/user/update-bio/:username", controllers.UpdateBio)
+
+	r.GET("/api/v1/link/:username", controllers.GetUserLinks)
 
 	protectedRoutes := r.Group("/api/v1/link")
 	protectedRoutes.Use(middleware.AuthenticationMiddleware())
@@ -40,7 +44,6 @@ func main() {
 		protectedRoutes.POST("/", controllers.AddLink)
 		protectedRoutes.PUT("/:link_id", controllers.EditLink)
 		protectedRoutes.DELETE("/:link_id", controllers.DeleteLink)
-		protectedRoutes.GET("/:username", controllers.GetUserLinks)
 	}
 
 	r.Run(":8083")

@@ -116,3 +116,45 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 
 }
+
+// UpdateBio godoc
+// @Summary     Update user bio
+// @Description Updates the bio for a specific user
+// @Tags        User
+// @Accept      json
+// @Produce     json
+// @Param       username path     string true "Username"
+// @Param       bio      body     string true "User Bio"
+// @Success		200				{object}	models.MsgResponse
+// @Failure		400				{object}	models.ErrorResponse
+// @Failure		404				{object}	models.ErrorResponse
+// @Failure		500				{object}	models.ErrorResponse
+// @Router		/user/update-bio/:username [put]
+func UpdateBio(c *gin.Context) {
+    var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+    defer cancel()
+
+    username := c.Param("username")
+    var updateData struct {
+        Bio string `json:"bio" binding:"required"`
+    }
+
+    if err := c.BindJSON(&updateData); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Bio is required"})
+        return
+    }
+	update := bson.M{"$set": bson.M{
+		"bio":updateData.Bio,
+	}}
+    result, updateErr := userCollection.UpdateOne(ctx, bson.M{"username": username}, update)
+    if updateErr != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating bio"})
+        return
+    }
+	if result.MatchedCount == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
+		return
+	}
+
+    c.JSON(http.StatusOK, gin.H{"message": "Bio updated successfully"})
+}
