@@ -158,3 +158,28 @@ func UpdateBio(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"message": "Bio updated successfully"})
 }
+
+// GetUserInfo	godoc
+// @Summary		Get user info
+// @Description Get bio, first ,second names of a specific user
+// @Tags		User
+// @Accept		json
+// @Produce		json
+// @Success		200				{object}	models.MsgResponse
+// @Failure		404				{object}	models.ErrorResponse
+// @Failure		500				{object}	models.ErrorResponse
+// @Router		/api/v1/link/:username [get]
+func GetUserInfo(c *gin.Context) {
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
+
+	username := c.Param("username")
+	var user models.User
+	err := userCollection.FindOne(ctx, bson.M{"username": username}).Decode(&user)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Not user found with this username"})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}

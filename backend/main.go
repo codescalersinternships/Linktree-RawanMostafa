@@ -32,7 +32,7 @@ func main() {
 	{
 		publicRoutes.POST("/login", controllers.Login)
 		publicRoutes.POST("/register", controllers.Signup)
-		
+		publicRoutes.GET("/:username", controllers.GetUserInfo)
 	}
 	r.Use(middleware.AuthenticationMiddleware()).PUT("/user/update-bio/:username", controllers.UpdateBio)
 
