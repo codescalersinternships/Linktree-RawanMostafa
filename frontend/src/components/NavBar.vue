@@ -2,7 +2,7 @@
     
     <div class="navbar">
         <div class="logo">
-            <a href="/"><img src="../assets/logo.png" alt="Logo"></a>
+            <a href="/"><img src="/assets/logo.png" alt="Logo"></a>
             <a class="title" href="/">Linktree</a>
         </div>
         <div class="hamburger" @click="toggleDropdown">
@@ -49,7 +49,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1000;
-    padding: 10px 20px;
+    padding: 0px 20px;
 }
 
 .logo {
@@ -75,7 +75,7 @@ body {
     font-size: 18px;
     text-decoration: none;
     font-weight: 500;
-    padding: 8px 12px;
+    padding: 0px 12px;
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s ease, color 0.3s ease;

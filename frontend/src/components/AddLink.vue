@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import igIcon from '../assets/icons/instagram.png';
-import fbIcon from '../assets/icons/facebook.png';
-import xIcon from '../assets/icons/twitter.png';
-import linkedinIcon from '../assets/icons/twitter.png'
-import gitIcon from '../assets/icons/github.png'
+import igIcon from '/assets/icons/instagram.png';
+import fbIcon from '/assets/icons/facebook.png';
+import xIcon from '/assets/icons/twitter.png';
+import linkedinIcon from '/assets/icons/twitter.png'
+import gitIcon from '/assets/icons/github.png'
 
 
 export default {

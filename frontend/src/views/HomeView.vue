@@ -7,7 +7,7 @@ import NavBar from '../components/NavBar.vue'
     <NavBar />
 
     <div class="main">
-      <img src="../assets/logo.png" alt="">
+      <img src="/assets/logo.png" alt="">
       <h1 class="animated-phrase">Welcome to Your Personalized Link Tree!</h1>
       <h2 class="sub-phrase">Connect all your links in one place</h2>
     </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="link">
         <div class="hero-link">
-            <img class="platform-logo" :src="`@/assets/icons/${platform}.png`" :alt="`${platform} logo`" />         
+            <img class="platform-logo" :src="`/assets/icons/${platform}.png`" :alt="`${platform} logo`" />         
             <a :href="url" target="_blank">{{ url }}</a>
             <div class="dropdown">
                 <div class="dropdown-btn">...</div>
@@ -53,6 +53,7 @@ body {
 }
 .platform-logo{
     width: 30px;
+    margin-top: 10px;
 }
 
 .link {
