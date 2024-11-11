@@ -80,7 +80,7 @@ body {
 .link a {
     color: rgb(36, 73, 70);
     font-size: 18px;
-    margin: 0;
+    margin-top: 10px;
     text-decoration: none;
 }
 
@@ -140,6 +140,7 @@ body {
     color: rgb(36, 73, 70);
     font-size: 17px;
     align-self: flex-start;
+    margin-bottom: 5px;
 }
 
 .link a:hover{

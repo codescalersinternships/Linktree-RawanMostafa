@@ -168,13 +168,18 @@ func UpdateBio(c *gin.Context) {
 // @Success		200				{object}	models.MsgResponse
 // @Failure		404				{object}	models.ErrorResponse
 // @Failure		500				{object}	models.ErrorResponse
-// @Router		/api/v1/link/:username [get]
+// @Router		/user/:username [get]
 func GetUserInfo(c *gin.Context) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
 
 	username := c.Param("username")
-	var user models.User
+	var user struct {
+		ID         string `json:"id"`
+		Bio        string `json:"bio"`
+		FirstName  string `json:"first_name"`
+		SecondName string `json:"second_name"` 
+	}
 	err := userCollection.FindOne(ctx, bson.M{"username": username}).Decode(&user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Not user found with this username"})
