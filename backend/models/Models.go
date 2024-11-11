@@ -41,7 +41,6 @@ type LoginRequest struct {
 }
 
 type LinkRequest struct {
-	Platform string `json:"platform"`
 	Url      string `json:"url"`
 }
 

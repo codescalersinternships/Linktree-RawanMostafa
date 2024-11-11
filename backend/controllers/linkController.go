@@ -107,7 +107,6 @@ func EditLink(c *gin.Context) {
 
 	update := bson.M{"$set": bson.M{
 		"url":      input.Url,
-		"platform": input.Platform,
 	}}
 	result, updateErr := linkCollection.UpdateOne(ctx, bson.M{"linkid": linkID}, update)
 	if updateErr != nil {

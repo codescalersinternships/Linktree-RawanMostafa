@@ -102,7 +102,6 @@ func TestEditLink(t *testing.T) {
 	r.PUT("/api/v1/link/:link_id", EditLink)
 	body := models.LinkRequest {
 		Url: "test_url_new" + GenerateRandomString(),
-		Platform: "test_new_platform",
 	}
 	marshalled, _ := json.Marshal(body)
 	req, _ := http.NewRequest("PUT", "/api/v1/link/"+addLinkResBody.LinkID, bytes.NewReader(marshalled))

@@ -22,7 +22,7 @@
         <h3 class="link-title">{{ userInfo.first_name }}'s links:</h3>
         <div v-if="links.length > 0">
             <div v-for="(link, index) in links" :key="index">
-                <Link :url="link.url" :platform="link.platform" :click_count="link.click_count" />
+                <Link :url="link.url" :platform="link.platform" :click_count="link.click_count" :link_id="link.link_id"  @update-link="updateLink(index, $event)"/>
             </div>
         </div>
         <div v-else>
@@ -106,8 +106,24 @@ function saveBio() {
     });
 }
 
-function DeleteLink(){
-    
+function updateLink(index, newLink) { 
+  links.value[index] = { ...links.value[index], ...newLink };
+
+  axios.put(`http://localhost:8083/api/v1/link/${newLink.link_id}`, 
+  {
+    url: newLink.url,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(response => {
+    console.log("Link updated successfully:", response.data);
+  })
+  .catch(err => {
+    console.error("Error updating link:", err);
+  });
 }
 </script>
 

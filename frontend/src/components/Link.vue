@@ -1,24 +1,32 @@
 <template>
     <div class="link">
-        <div class="hero-link">
-            <img class="platform-logo" :src="`/assets/icons/${platform}.png`" :alt="`${platform} logo`" />         
-            <a :href="url" target="_blank">{{ url }}</a>
-            <div class="dropdown">
-                <div class="dropdown-btn">...</div>
-                <div class="dropdown-content">
-                    <button class="dropdown-item">Edit</button>
-                    <button class="dropdown-item">Delete</button>
-                </div>
+      <div class="hero-link">
+        <img class="platform-logo" :src="`/assets/icons/${platform}.png`" :alt="`${platform} logo`" />
+        <template v-if="!isEditing"> 
+          <a :href="url" target="_blank">{{ url }}</a>
+          <div class="dropdown">
+            <div class="dropdown-btn">...</div>
+            <div class="dropdown-content">
+              <button class="dropdown-item" @click="toggleEdit">Edit</button> 
+              <button class="dropdown-item">Delete</button>
             </div>
-        </div>
-        <div class="click-count">
-            <small>Click count: {{ click_count }}</small>
-        </div>
+          </div>
+        </template>
+        <template v-else> 
+          <input v-model="editableUrl" placeholder="Edit URL" /> 
+          <button @click="saveEdit">Save</button>
+          <button @click="toggleEdit">Cancel</button> 
+        </template>
+      </div>
+      <div class="click-count">
+        <small>Click count: {{ click_count }}</small>
+      </div>
     </div>
-</template>
+  </template>
 
 <script setup>
-defineProps({
+import {ref} from "vue";
+const props=defineProps({
   url: {
     type: String,
     required: true
@@ -30,9 +38,26 @@ defineProps({
   click_count: {
     type: Number,
     required: true
+  },
+  link_id: {
+    type: String,
+    required: true
   }
 })
+const isEditing = ref(false); 
+const editableUrl = ref(props.url); 
 
+function toggleEdit() {
+  isEditing.value = !isEditing.value;
+  editableUrl.value = url;
+}
+const emit = defineEmits(['update-link']);
+
+function saveEdit() { 
+  isEditing.value = false;
+  emit('update-link', { url: editableUrl.value ,link_id:props.link_id});
+  console.log(props.link_id)
+}
 </script>
 
 <style>
