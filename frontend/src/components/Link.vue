@@ -8,7 +8,7 @@
             <div class="dropdown-btn">...</div>
             <div class="dropdown-content">
               <button class="dropdown-item" @click="toggleEdit">Edit</button> 
-              <button class="dropdown-item">Delete</button>
+              <button class="dropdown-item" @click="deleteLink">Delete</button>
             </div>
           </div>
         </template>
@@ -56,7 +56,10 @@ const emit = defineEmits(['update-link']);
 function saveEdit() { 
   isEditing.value = false;
   emit('update-link', { url: editableUrl.value ,link_id:props.link_id});
-  console.log(props.link_id)
+}
+
+function deleteLink() {
+    emit('delete-link', {link_id:props.link_id});
 }
 </script>
 

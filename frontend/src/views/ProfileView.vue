@@ -22,11 +22,8 @@
         <h3 class="link-title">{{ userInfo.first_name }}'s links:</h3>
         <div v-if="links.length > 0">
             <div v-for="(link, index) in links" :key="index">
-                <Link :url="link.url" :platform="link.platform" :click_count="link.click_count" :link_id="link.link_id"  @update-link="updateLink(index, $event)"/>
+                <Link :url="link.url" :platform="link.platform" :click_count="link.click_count" :link_id="link.link_id"  @update-link="updateLink(index, $event)" @delete-link="deleteLink(index, $event)"/>
             </div>
-        </div>
-        <div v-else>
-            <p>Loading...</p>
         </div>
         <button class="submit-btn">Add Link</button>
     </div>
@@ -125,10 +122,31 @@ function updateLink(index, newLink) {
     console.error("Error updating link:", err);
   });
 }
+
+function deleteLink(index, newLink) { 
+
+  axios.delete(`http://localhost:8083/api/v1/link/${newLink.link_id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(response => {
+    console.log("Link delete successfully:", response.data);
+    links.value.splice(index, 1);
+
+  })
+  .catch(err => {
+    console.error("Error deleting link:", err);
+  });
+}
 </script>
 
 <style scoped>
+
 .hero{
+    position: relative;
+    min-height: 82vh;
     font-family: 'Courier New', Courier, monospace;
 }
 .submit-btn {
@@ -145,8 +163,7 @@ function updateLink(index, newLink) {
 .profile-section {
     background-color: rgba(175, 149, 127, 0.454);
     width: 100vw;
-    height: 15vh;
-    margin-top: -50px;
+    height: fit-content;
     padding-top: 30px;
     padding-left: 30px;
 }
