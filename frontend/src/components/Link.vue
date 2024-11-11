@@ -13,9 +13,9 @@
           </div>
         </template>
         <template v-else> 
-          <input v-model="editableUrl" placeholder="Edit URL" /> 
-          <button @click="saveEdit">Save</button>
-          <button @click="toggleEdit">Cancel</button> 
+          <input v-model="editableUrl" placeholder="Edit URL" class="edit-url"/> 
+          <button @click="saveEdit" class="save-btn">Save</button>
+          <button @click="toggleEdit" class="cancel-btn">Cancel</button> 
         </template>
       </div>
       <div class="click-count">
@@ -170,5 +170,31 @@ body {
 
 .link a:hover{
     color: rgb(15, 40, 38);
+}
+.save-btn, .cancel-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    margin: 10px 5px;
+    background-color: rgb(51, 93, 107);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.save-btn:hover {
+    background-color: rgb(35, 64, 74);
+}
+
+.cancel-btn {
+    background-color: #ccc;
+}
+
+.cancel-btn:hover {
+    background-color: #999;
+}
+.edit-url{
+    height: 23px;
+    border-radius: 3px;
+    border: 0px;
 }
 </style>
